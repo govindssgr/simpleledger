@@ -35,10 +35,11 @@ public class PaymentTree {
 
     private void build(long emi, long lastEmi) {
         Queue<Node> queue = new LinkedList<>();
-        for (int i = 0; i < numberOfInstallments - 1; i++) {
+        queue.offer(new Node(0, 0, 0));
+        for (int i = 1; i < numberOfInstallments; i++) {
             queue.offer(new Node(i, i, emi));
         }
-        queue.offer(new Node(numberOfInstallments - 1, numberOfInstallments - 1, lastEmi));
+        queue.offer(new Node(numberOfInstallments, numberOfInstallments, lastEmi));
 
         while (queue.size() > 1) {
             int size = queue.size();
@@ -61,7 +62,7 @@ public class PaymentTree {
     // Note: emiNumber is 1 indexed. we'll need to add the amount to the next emiNumber.
     // emiNumber - 1 + 1 will "emiNumber" index
     public void add(int emiNumber, long amount) {
-        Node node = find(root, emiNumber - 1);
+        Node node = find(root, emiNumber);
         if (node == null) {
             // Throwing an exception as the lumpsum payment need not be done and loan must have been closed by now.
             throw new RuntimeException("lumpsum payment need not be done and loan must have been closed by now");
@@ -100,7 +101,7 @@ public class PaymentTree {
 
     public long amountPaid(int emiNumber) {
         int start = 0;
-        int end = emiNumber - 1;
+        int end = emiNumber;
         return sum(start, end, root);
     }
 

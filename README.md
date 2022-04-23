@@ -1,8 +1,11 @@
 #### To run the application
-./gradlew :runLedger -Pfile=<INPUT_FILE_PATH>
+./gradlew build
+java -jar ./build/libs/geektrust.jar <INPUT_FILE_PATH>
+
 ######
 eg)
-./gradlew :runLedger -Pfile=/Users/govind/workspace/ledger/src/main/resources/sample1.txt
+java -jar ./build/libs/geektrust.jar /Users/govind/workspace/ledger/src/main/resources/sample1.txt
+
 
 #### Assumptions
 1) The question doesn't clearly mention if one borrower is allowed to take multiple loans from the same bank. From the examples given if seems it shouldn't be allowed. Both parallel and sequential loans are not supported. But the same borrower can take loans from different banks.

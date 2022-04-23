@@ -2,15 +2,31 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group = 'com.example'
+version = '1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+jar {
+    archiveBaseName = 'geektrust' //Please do not change this final artifact name
+    version =  null               //Please do not change this final artifact version
+    manifest {
+        attributes 'Main-Class' : 'ledger.LedgerApplication'
+    }
+
+    // To create a single jar with all dependencies.
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+}
 
 repositories {
     mavenCentral()
-}
-
-ext {
-    javaMainClass = "ledger.LedgerApplication"
 }
 
 dependencies {
@@ -20,10 +36,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-}
-
-task runLedger(type: Exec) {
-    dependsOn build
-    group = "Execution"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), javaMainClass, file
 }
